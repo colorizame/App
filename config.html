@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Poly UI Kit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="charset" content="utf-8">
+    <link rel="stylesheet" href="css/application.css">
+    <link rel="shortcut icon" href="img/favicon.png">
+  </head>
+  <body>
+    <div class="grid">
+      <header class="grid__col--12 panel--padded--centered" role="banner"> 
+        <a class="site-logo" href="/">
+          <b class="srt">Coloriza.me Sentinel</b>
+        </a>
+        <nav class="navbar" role="navigation">
+          <span id="toggle" class="icn--nav-toggle is-displayed-mobile">
+            <b class="srt">Toggle</b>
+          </span>   
+          <ul class="nav is-collapsed-mobile">
+            <li class="nav__item"><a href="#type">Acerca De</a></li>
+            <li class="nav__item--current"><a href="#nav">Explora Colores</a></li>
+            <li class="nav__item"><a href="#buttons">Configuracion</a></li>
+          </ul>
+        </nav>
+      </header>
+    </div>
+
+    <h4 class="grid">Cambia de cuenta para almacenar los colores</h4>
+    <div class="grid">
+      <div class="grid__col--12">
+        <img class="img--avatar" src="img/avatar.png" alt="Avatar">
+        <form>
+          <label class="form__label--hidden" for="username">Username:</label> 
+          <input class="form__input" type="text" id="username" placeholder="Username">
+          <label class="form__label--hidden" for="password">Password:</label>
+          <input class="form__input" type="password" id="password" placeholder="Password">
+          <input class="form__btn" type="submit" value="Login">
+        </form>
+      </div>
+    </div>
+        
+
+    <div class="grid">
+      <footer class="grid__col--12 panel--padded--centered" role="contentinfo">
+        <a class="site-logo" href="#">
+          <b class="srt">Poly - UI Toolkit</b>
+        </a>
+        <p>A simple UI Kit for everyone to share and enjoy.</p>
+      </footer>
+    </div>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script>
+      $('#toggle').click(function() {
+        $(this).next('.nav').toggleClass("is-collapsed-mobile");
+      });
+    </script>
+  </body>
+</html>
