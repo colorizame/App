@@ -223,6 +223,10 @@
                 $("#rbar").css("width", ((100*redVal)/255)+"%");
                 $("#gbar").css("width", ((100*greenVal)/255)+"%");
                 $("#bbar").css("width", ((100*blueVal)/255)+"%");
+                var match = ntc.name(valorhex);
+                var name    = match[1]; // The color name
+                $("#nombreColor").text(name);
+                getDatos(valorhex);
                 //console.log("Valores: rgb("+redVal+","+greenVal+","+blueVal+")");
               });
             });
