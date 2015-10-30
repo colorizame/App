@@ -18,9 +18,8 @@
             <b class="srt">Toggle</b>
           </span>   
           <ul class="nav is-collapsed-mobile">
-            <li class="nav__item"><a href="#type">Acerca De</a></li>
-            <li class="nav__item--current"><a href="#nav">Explora Colores</a></li>
-            <li class="nav__item"><a href="#buttons">Configuracion</a></li>
+            <li class="nav__item"><a href="acerca.html">Acerca De</a></li>
+            <li class="nav__item"><a href="config.html">Configuracion</a></li>
           </ul>
         </nav>
       </header>
@@ -33,7 +32,6 @@
         
         <div id="maincolor">
             <span id="hexname">#00000</span>
-
         </div>
       </div>
     <div class="grid">
@@ -49,15 +47,27 @@
         </div>
       </div>
     </div>
+    <h4 id="buttons" class="grid" style="color:#000;"><b>Nombre: </b><span id="nombreColor">N/A</span></h4>
     <div class="grid">
       <div class="grid__col--12">
         <a id="scan" class="btn--default" href="#">Escanear</a>
+      </div>
+    </div>
+    <h4 id="buttons" class="grid"><b style="color:#000;">RGB: </b><span id="ere">N/A</span>,<span id="ge">N/A</span>,<span id="be">N/A</span></h4>
+    <h4 id="buttons" class="grid"><b style="color:#000;">HSL: </b><span id="h">N/A</span>,<span id="s">N/A</span>,<span id="l">N/A</span></h4>
+    <h4 id="buttons" class="grid"><b style="color:#000;">HSB: </b><span id="hache">N/A</span>,<span id="esse">N/A</span>,<span id="b">N/A</span></h4>
+    <h4 id="buttons" class="grid"><b style="color:#000;">CMYK: </b><span id="c">N/A</span>,<span id="m">N/A</span>,<span id="y">N/A</span>,<span id="k">N/A</span></h4>
+
+    <div class="grid">
+      <div class="grid__col--12">
         <a id="negro" class="btn--error" href="#">Calibrar Negro</a>
       <button id ="blanco" class="btn--warning">Calibrar Blanco</button>
       </div>
     </div>
-         
     <h4 id="status" class="grid">Estatus: <span id="status" stlye="text-decoration: italics;">desconectado</span></h4>
+    <div id="loader" style="display:none;width: 100%; height:100%; position:absolute;background:#fff;top:0;left:0;">
+      <img src="loading.gif" style="position:absolute;left:50%;top:50%;margin-left:-15px;margin-top:-15px;" alt="">
+    </div>
     <div class="grid">
       <footer class="grid__col--12 panel--padded--centered" role="contentinfo">
         <a class="site-logo" href="#">
@@ -67,6 +77,7 @@
       </footer>
     </div>
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="ntc.js"></script>
     <script>
       $('#toggle').click(function() {
         $(this).next('.nav').toggleClass("is-collapsed-mobile");
@@ -98,6 +109,41 @@
           var hex = c.toString(16);
           return hex.length == 1 ? "0" + hex : hex;
       }
+      var link;
+      function getDatos(hex) {
+        link = "http://cors.io/?u=http://rgb.to/save/json/color/"+hex.substring(1,hex.length);
+        $.ajax({
+            url: link,
+         
+            // The name of the callback parameter, as specified by the YQL service
+            jsonp: "callback",
+         
+            // Tell jQuery we're expecting JSONP
+            dataType: "json",
+         
+            // Tell YQL what we want and that we want JSON
+            data: {
+                format: "json"
+            },
+         
+            // Work with the response
+            success: function( response ) {
+                $("#ere").text(response.rgb.r);
+                $("#ge").text(response.rgb.g);
+                $("#be").text(response.rgb.b);
+                $("#h").text(response.hsl.h);
+                $("#s").text(response.hsl.s);
+                $("#l").text(response.hsl.l);
+                $("#hache").text(response.hsb.h);
+                $("#esse").text(response.hsb.s);
+                $("#b").text(response.hsb.b);
+                $("#c").text(response.cmyk.c);
+                $("#m").text(response.cmyk.m);
+                $("#y").text(response.cmyk.y);
+                $("#k").text(response.cmyk.k);
+            }
+        });
+      }
 
       function rgbToHex(r, g, b) {
           return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
@@ -110,6 +156,7 @@
       });
       $('#scan').click(function(){
         doMethod('escanear', 'ASD');
+        $("#loader").fadeIn();
         setTimeout(function() {
           var redVal = 0;
           var greenVal = 0;
@@ -143,6 +190,11 @@
               rVerif = false;
               gVerif = false;
               bVerif = false;
+              var match = ntc.name(valorhex);
+              var name    = match[1]; // The color name
+              $("#nombreColor").text(name);
+              getDatos(valorhex);
+              $("#loader").fadeOut();
               clearInterval(verificar);
             }
           }, 100);
@@ -162,6 +214,9 @@
               getVariable('colorBlue', function(res) {
                 blueVal = res.result;
                 var valorhex = rgbToHex(redVal,greenVal,blueVal);
+                var match = ntc.name(valorhex);
+                var name    = match[1]; // The color name
+              $("#nombreColor").text(name);
                 console.log(valorhex);
                 $("#maincolor").css("background-color", valorhex);
                 $("#hexname").text(valorhex);
